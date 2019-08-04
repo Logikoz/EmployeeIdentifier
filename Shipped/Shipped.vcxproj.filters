@@ -15,8 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shipped.ino" />
     <None Include="src\arduino folders read me.txt" />
+    <None Include="Shipped.ino">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Shipped.vsarduino.h">

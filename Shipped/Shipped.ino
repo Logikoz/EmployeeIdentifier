@@ -4,6 +4,12 @@
 //pins
 const unsigned short int SdaPin = 10;
 const unsigned short int RtsPin = 9;
+const unsigned short int LedGreenPin = 6;
+const unsigned short int LedRedPin = 7;
+const unsigned short int BuzzerPin = 8;
+//number of times the buzzer will beep.
+const unsigned short int CountBuzzerAllowed = 1;
+const unsigned short int CountBuzzerDenied = 2;
 
 //array containing allowed employees 
 String RegistredEmployeeID[] = { "34611b" };
@@ -18,6 +24,10 @@ void setup()
   SPI.begin();
   // Init MFRC522 card
   ReadRFID.PCD_Init();
+
+  pinMode(LedGreenPin, OUTPUT);
+  pinMode(LedRedPin, OUTPUT);
+  pinMode(BuzzerPin, OUTPUT);
 }
 
 void loop()
@@ -49,14 +59,14 @@ void ReadCard()
     //if true, granted acess
     if (isChecked == true)
     {
-      AccessAllowed();
+      WhistleAllowed();
     }
     //else, i'm sorry.
     else
     {
-      AccessDenied();
+      WhistleDenied();
     }
-    //awaiting
+    //waiting 3 secs for next check.
     delay(3000);
   }
   else
@@ -65,14 +75,37 @@ void ReadCard()
   }
 }
 
-void AccessAllowed()
+void WhistleAllowed()
 {
   //send message of acess allowed 
   Serial.println("Allowed: " + EmployeeID);
+  //whistle buzzer.
+  Whistle(CountBuzzerAllowed);
 }
 
-void AccessDenied()
+void WhistleDenied()
 {
   //send message of acess denied 
   Serial.println("Denide: " + EmployeeID);
+  //whistle buzzer.
+  Whistle(CountBuzzerDenied);
+}
+
+void Whistle(const int count)
+{
+  for (int i = 0; i < count; i++)
+  {
+    //checking if count send is allowed or denied, and apply frequency.
+    tone(BuzzerPin, count == 1 ? 1500 : 500);
+    //and let there be light
+    digitalWrite(LedGreenPin, HIGH);
+    //await .2 secs for turn off.
+    delay(200);
+    //turn off buzzer.
+    noTone(BuzzerPin);
+    //turn off led
+    digitalWrite(LedGreenPin, LOW);
+    //...
+    delay(100);
+  }
 }

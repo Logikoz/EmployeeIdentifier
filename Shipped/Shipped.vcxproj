@@ -115,11 +115,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\arduino folders read me.txt">
-    </None>
+    <ClInclude Include="__vm\.Shipped.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Shipped.vsarduino.h" />
+    <ClCompile Include="teste.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

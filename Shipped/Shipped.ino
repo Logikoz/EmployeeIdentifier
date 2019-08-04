@@ -32,47 +32,53 @@ void setup()
 
 void loop()
 {
-  ReadCard();
+  if (IsCardUp())
+  {
+    CheckCardExists();
+  }
 }
 //keep employee card id
 String EmployeeID;
 //if the id exists or not, it will be saved here
 bool isChecked;
 
-void ReadCard()
+bool IsCardUp()
+{
+  return ReadRFID.PICC_IsNewCardPresent() && ReadRFID.PICC_ReadCardSerial();
+}
+
+void CheckCardExists()
 {
   //initializing EmployeeID with empty for avoid bugs.
   EmployeeID = "";
-  //checking if there is a card on top of the reader
-  if (ReadRFID.PICC_IsNewCardPresent() && ReadRFID.PICC_ReadCardSerial())
+  //checking if the id is from an employee.
+  for (int i = 0; i < (sizeof(RegistredEmployeeID) / sizeof(String)); i++)
   {
-    //reading id from card and saving to variable.
-    for (byte i = 0; i < ReadRFID.uid.size; i++)
-    {
-      EmployeeID.concat(String(ReadRFID.uid.uidByte[i], HEX));
-    }
-    //checking if the id is from an employee.
-    for (int i = 0; i < (sizeof(RegistredEmployeeID) / sizeof(String)); i++)
-    {
-      isChecked = EmployeeID.equalsIgnoreCase(RegistredEmployeeID[i]);
-    }
-    //if true, granted acess
-    if (isChecked == true)
-    {
-      WhistleAllowed();
-    }
-    //else, i'm sorry.
-    else
-    {
-      WhistleDenied();
-    }
-    //waiting 3 secs for next check.
-    delay(3000);
+    isChecked = (EmployeeID = ReadCard()).equalsIgnoreCase(RegistredEmployeeID[i]);
   }
+  //if true, granted acess
+  if (isChecked == true)
+  {
+    WhistleAllowed();
+  }
+  //else, i'm sorry.
   else
   {
-    return;
+    WhistleDenied();
   }
+  //waiting 3 secs for next check.
+  delay(3000);
+}
+
+String ReadCard()
+{
+  String card = "";
+  //reading id from card and saving to variable.
+  for (byte i = 0; i < ReadRFID.uid.size; i++)
+  {
+    card.concat(String(ReadRFID.uid.uidByte[i], HEX));
+  }
+  return card;
 }
 
 void WhistleAllowed()

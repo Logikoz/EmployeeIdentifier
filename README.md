@@ -1,6 +1,6 @@
 # Identificador De Funcionarios feito para o estudo de ioT e Web. 
 
-### Funcionalidades
+### Objetivos
 - [x] Adicionar leitor RFID
 - [x] Montar circuito para acender leds e apitar buzzer ao passar um cartao
 - [x] Adicionar sistema de cadastro de novos funcionarios

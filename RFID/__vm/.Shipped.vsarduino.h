@@ -80,5 +80,6 @@ typedef void *__builtin_va_list;
 #define pgm_read_ptr(address_short)   short()
 
 #include "Shipped.ino"
+#include "ESP8266.ino"
 #endif
 #endif

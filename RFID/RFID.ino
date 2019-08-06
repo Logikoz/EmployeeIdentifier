@@ -10,9 +10,6 @@ const unsigned short int LedGreenPin = 6;
 const unsigned short int LedRedPin = 7;
 const unsigned short int LedYellowPin = 4;
 const unsigned short int BuzzerPin = 8;
-//number of times the buzzer will beep.
-const unsigned short int CountBuzzerAllowed = 1;
-const unsigned short int CountBuzzerDenied = 2;
 
 //card admin for add or remove employee
 String CardAdminID = "8bcbafd";
@@ -50,6 +47,8 @@ void loop()
 			Serial.println("passe o cartao...");
 		}
 		while (!IsCardUp());
+		String cardID = ReadCard();
+		Serial.println("ID is: " + cardID);
 		//blink led green and whistle buzzer for indicate sucess in process.
 		Whistle(1);
 		//turn off yellow led.
@@ -115,7 +114,7 @@ void WhistleAllowed()
 	//send message of acess allowed 
 	Serial.println("Allowed: " + EmployeeID);
 	//whistle buzzer.
-	Whistle(CountBuzzerAllowed);
+	Whistle(1);
 }
 
 void WhistleDenied()
@@ -123,7 +122,7 @@ void WhistleDenied()
 	//send message of acess denied 
 	Serial.println("Denide: " + EmployeeID);
 	//whistle buzzer.
-	Whistle(CountBuzzerDenied);
+	Whistle(2);
 }
 
 void Whistle(const int count)

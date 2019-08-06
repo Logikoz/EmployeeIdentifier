@@ -15,11 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ESP8266.ino">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="RFID.ino">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="ESP8266.ino">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="__vm\.Shipped.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

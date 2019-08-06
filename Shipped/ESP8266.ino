@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const char* ssid = "nomeDaRede";
-const char* password = "senhaDaRede";
+const char* ssid = "rede";
+const char* password = "senha";
 
 void setup()
 {
@@ -26,7 +26,7 @@ void loop()
 	{
 		HTTPClient http;
 
-		http.begin("uri aqui");
+		http.begin("http://jsonplaceholder.typicode.com/todos/1");
 		int httpCode = http.GET();
 
 		if (httpCode > 0)

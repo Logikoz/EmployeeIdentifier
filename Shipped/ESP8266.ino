@@ -1,12 +1,12 @@
-#include <ESP8266WiFi.h>
+﻿#include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const char* ssid = "rede";
-const char* password = "senha";
+const char* ssid = "YOUR SSID";
+const char* password = "YOUT KEY";
 
 void setup()
-{
-	Serial.begin(9600);
+{//$ad:https://jsonplaceholder.typicode.com/posts?id=1
+	Serial.begin(115200);
 	delay(5000);
 	WiFi.begin(ssid, password);
 
@@ -16,29 +16,45 @@ void setup()
 		Serial.println("Connecting to WiFi..");
 	}
 
-	Serial.println("Connected to the WiFi network");
-
+	Serial.println("Connected");
 }
 
 void loop()
 {
-	if ((WiFi.status() == WL_CONNECTED))
+	if (Serial.available())
 	{
-		HTTPClient http;
-
-		http.begin("http://jsonplaceholder.typicode.com/todos/1");
-		int httpCode = http.GET();
-
-		if (httpCode > 0)
+		String uriSerial = Serial.readString();
+		if (uriSerial.startsWith("$ad:"))
 		{
-			String payload = http.getString();
-			Serial.println(payload);
-		}
-		else
-		{
-			Serial.println("Error on HTTP request");
+			Serial.println(uriSerial);
+			uriSerial = ClearString(uriSerial);
 		}
 
-		http.end();
+		if ((WiFi.status() == WL_CONNECTED))
+		{
+			HTTPClient http;
+			http.begin("http://logikoz.tk/validar.php?id=" + uriSerial);
+
+			if (http.GET() > 0)
+			{
+				Serial.println("$esp:" + http.getString());
+			}
+			//freeing up resources
+			http.end();
+		}
 	}
+}
+
+String ClearString(String str)
+{
+	String ok = str;
+	for (int i = 0; i < (sizeof(str) / sizeof(String)); i++)
+	{
+		ok.replace("\n", "");
+		ok.replace(" ", "");
+		ok.replace("?", "");
+		ok.replace("⸮", "");
+		ok.replace("$ad:", "");
+	}
+	return ok;
 }
